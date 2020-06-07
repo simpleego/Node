@@ -1,0 +1,22 @@
+癤?!DOCTYPE html>
+<html>
+<head>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    window.onload = function () {
+        // ?뚯폆???곌껐?⑸땲??
+        var socket = io.connect();
+        // ?뚯폆 ?대깽?몃? ?곌껐?⑸땲??
+        socket.on('smart', function (data) {
+        });
+        // 臾몄꽌 媛앹껜 ?대깽?몃? ?곌껐?⑸땲??
+        document.getElementById('button').onclick = function () {
+        };
+    };
+  </script>
+</head>
+<body>
+  <input type="text" id="text" />
+  <input type="button" id="button" value="echo" />
+</body>
+</html>

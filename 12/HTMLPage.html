@@ -1,0 +1,92 @@
+癤?!DOCTYPE html>
+<html>
+<head>
+    <title>Node.js Programming for Modern Web</title>
+    <style>
+        .line {
+            overflow: hidden;
+        }
+
+        .seat {
+            margin: 2px;
+            float: left;
+            width: 30px;
+            height: 30px;
+            border-radius: 3px;
+        }
+
+        .enable {
+            background: gray;
+        }
+
+        .enable:hover {
+            background: black;
+        }
+
+        .disable {
+            background: red;
+        }
+    </style>
+    <script src="http://code.jquery.com/jquery-1.12.1.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <!-- ?뚯폆 ?앹꽦 -->
+    <script>
+        // ?뚯폆 ?대깽?몃? ?섑뻾?⑸땲??
+        var socket = io.connect();
+
+        // ?대깽?몃? ?곌껐?⑸땲??
+        socket.on('reserve', function (data) {
+            var $target = $('div[data-x = ' + data.x + '][data-y = ' + data.y + ']');
+            $target.removeClass('enable');
+            $target.addClass('disable');
+        });
+    </script>
+    <!-- 珥덇린 醫뚯꽍 ?앹꽦 -->
+    <script>
+        $(document).ready(function () {
+            // 蹂?섎? ?좎뼵?⑸땲??
+            var onClickSeat = function () {
+                var x = $(this).attr('data-x');
+                var y = $(this).attr('data-y');
+                if (confirm('醫뚯꽍???덉빟?섏떆寃좎뒿?덇퉴?')) {
+                    $(this).off('click');
+                    socket.emit('reserve', {
+                        x: x,
+                        y: y
+                    });
+                } else {
+                    alert('痍⑥냼?섏뿀?듬땲??');
+                }
+            };
+            // Ajax瑜??섑뻾?⑸땲??
+            $.getJSON('/seats', { dummy: new Date().getTime() }, function (data) {
+                // 醫뚯꽍???앹꽦?⑸땲??
+                $.each(data, function (indexY, line) {
+                    // 臾몄꽌 媛앹껜瑜??앹꽦?⑸땲??
+                    var $line = $('<div></div>').addClass('line');
+                    $.each(line, function (indexX, seat) {
+                        // 臾몄꽌 媛앹껜瑜??앹꽦?섍퀬 蹂??$line??異붽??⑸땲??
+                        var $output = $('<div></div>', {
+                            'class': 'seat',
+                            'data-x': indexX,
+                            'data-y': indexY
+                        }).appendTo($line);
+                        if (seat == 1) {
+                            // 醫뚯꽍??鍮꾩뼱 ?덉쑝硫?enable ?대옒?ㅼ? click 由ъ뒪?덈? 異붽??⑸땲??
+                            $output.addClass('enable').on('click', onClickSeat);
+                        } else if (seat == 2) {
+                            // 醫뚯꽍???ъ슜 遺덇??ν븯硫?disable ?대옒?ㅻ? 異붽??⑸땲??
+                            $output.addClass('disable');
+                        }
+                    });
+                    // 臾몄꽌 媛앹껜瑜?異붽??⑸땲??
+                    $line.appendTo('body');
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+
+</body>
+</html>

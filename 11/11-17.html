@@ -1,0 +1,28 @@
+癤?!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf8" />
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    window.onload = function () {
+      // 蹂?섎? ?좎뼵?⑸땲??
+      var room = prompt('諛??대쫫???낅젰?섏꽭??', '');
+      var socket = io.connect();
+      // ?뚯폆 ?대깽?몃? ?곌껐?⑸땲??
+      socket.emit('join', room);
+      socket.on('message', function (data) {
+        $('<p>' + data + '</p>').appendTo('body');
+      });
+
+      // 臾몄꽌 媛앹껜 ?대깽?몃? ?곌껐?⑸땲??
+      document.getElementById('button').onclick = function () {
+        socket.emit('message', 'socket.io room message');
+      };
+    };
+  </script>
+</head>
+<body>
+  <button id="button">EMIT</button>
+</body>
+</html>
